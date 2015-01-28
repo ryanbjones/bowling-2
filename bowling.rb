@@ -1,7 +1,8 @@
 class Bowling
   attr_reader :score
   def initialize
-    @score = 0
+    @frames = Array.new(10) {Frame.new}
+    @current_frame = 0
   end
 
   def roll(pins)
