@@ -33,6 +33,11 @@ class Frame
     @score = 0
     @bonus = []
   end
+
+  def add_roll(pins)
+    @score += pins
+    @rolls.push(pins)
+  end
     @score += pins
   end
 
