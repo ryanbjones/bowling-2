@@ -6,6 +6,12 @@ class Bowling
   end
 
   def roll(pins)
+class Frame
+  def initialize
+    @rolls = []
+    @score = 0
+    @bonus = []
+  end
     @score += pins
   end
 
