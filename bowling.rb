@@ -20,6 +20,13 @@ class Bowling
   def prior_frame
     @current_frame > 0 ? @current_frame - 1 : 9
   end
+
+  def score
+    @frames.map(&:score).reduce(:+)
+  end
+
+end
+
 class Frame
   def initialize
     @rolls = []
