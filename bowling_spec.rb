@@ -28,4 +28,10 @@ describe Bowling do
     expect(game.score).to eq(20)
   end
 
+  it 'scores three consecutive strikes' do
+    3.times {game.roll(10) }
+    14.times {game.rollw(0)}
+    expect(game.score).to eq(60)
+  end
+
 end
