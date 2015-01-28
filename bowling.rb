@@ -16,6 +16,10 @@ class Bowling
     end
     @frames[prior_frame].add_bonus(pins) if @frames[prior_frame].needs_bonus?
   end
+
+  def prior_frame
+    @current_frame > 0 ? @current_frame - 1 : 9
+  end
 class Frame
   def initialize
     @rolls = []
