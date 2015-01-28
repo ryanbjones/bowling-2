@@ -14,6 +14,7 @@ class Bowling
       @current_frame += 1
       @frames[@current_frame].add_roll(pins)
     end
+    #add bonus if necessary
     @frames[prior_frame].add_bonus(pins) if @frames[prior_frame].needs_bonus?
   end
 
@@ -42,7 +43,11 @@ class Frame
   end
 
   def needs_bonus?
-    @bonus.length < 1 && spare?
+    @bonus.length < 1 && spare? || @bonus.length < 2 && strike?
+  end
+
+  def strike?
+    @rolls.first == 10
   end
 
   def spare?
