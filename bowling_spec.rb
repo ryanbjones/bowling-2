@@ -13,4 +13,12 @@ describe Bowling do
     expect(game.score).to eq(20)
   end
 
+  it 'scores a spare' do
+    game.roll(6)
+    game.roll(4)
+    game.roll(2)
+    17.times{ game.roll(0) }
+    expect(game.score).to eq(14)
+  end
+
 end
