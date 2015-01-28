@@ -8,4 +8,9 @@ describe Bowling do
     expect(game.score).to eq(0)
   end
 
+  it 'scores a game of ones' do
+    20.times { game.roll(1)}
+    expect(game.score).to eq(20)
+  end
+
 end
