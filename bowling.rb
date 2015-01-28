@@ -28,6 +28,8 @@ class Bowling
 end
 
 class Frame
+  attr_accessor :score
+
   def initialize
     @rolls = []
     @score = 0
