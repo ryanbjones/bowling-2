@@ -19,18 +19,9 @@ class Bowling
   end
 
   def score
-    total = 0
-    frames.each_with_index do |frame, index|
-      score = frame.pins
-      if frame.spare? || frame.strike?
-        how_many_rolls_to_take = frame.spare? ? 1 : 2
-        future_rolls = frames[(index+1)..-1].map(&:rolls).flatten
-        score += future_rolls.take(how_many_rolls_to_take).reduce(0,:+)
-      end
-
-      total += score
+    frames.reduce(0) do |sum, frame|
+      sum + frame_score(frame)
     end
-    total
   end
 
   private
@@ -41,5 +32,17 @@ class Bowling
     else
       Frame.new(@intermediate_rolls)
     end
+  end
+
+  def frame_score(frame)
+    frame.pins + frame_bonus(frame)
+  end
+
+  def frame_bonus(frame)
+    return 0 unless frame.spare? || frame.strike?
+    index = frames.index(frame)
+    how_many_rolls_to_take = frame.spare? ? 1 : 2
+    future_rolls = frames[(index+1)..-1].map(&:rolls).flatten
+    future_rolls.take(how_many_rolls_to_take).reduce(0,:+)
   end
 end
