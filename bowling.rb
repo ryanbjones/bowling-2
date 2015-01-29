@@ -19,11 +19,11 @@ class Bowling
       @frames[@current_frame].add_roll(pins)
     end
     #add bonus if necessary
-    calculate_bonus(pins)
+    calculate_bonus(pins) if @current_frame > 0
   end
 
   def prior_frame
-    @current_frame > 0 ? @current_frame - 1 : 9
+    @current_frame - 1
   end
 
   def score
