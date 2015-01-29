@@ -1,39 +1,45 @@
 require_relative "frame"
-require 'debugger'
 
 class Bowling
-  attr_reader :score
+  attr_reader :score, :frames
+
   def initialize
-    @frames = Array.new(9) {Frame.new}
-    @frames.push(TenthFrame.new)
-    @current_frame = 0
+    @frames = []
+    @intermediate_rolls = []
   end
 
   def roll(pins)
-    # add pins to current frame if incomplete
-    if @frames[@current_frame].incomplete?
-      @frames[@current_frame].add_roll(pins)
-    #move to next frame
-    else
-      @current_frame += 1
-      @frames[@current_frame].add_roll(pins)
-    end
-    #add bonus if necessary
-    calculate_bonus(pins) if @current_frame > 0
-  end
+    @intermediate_rolls << pins
 
-  def prior_frame
-    @current_frame - 1
+    frame = new_frame
+    if frame.complete?
+      frames << frame
+      @intermediate_rolls = []
+    end
   end
 
   def score
-    @frames.map(&:score).reduce(:+)
+    total = 0
+    frames.each_with_index do |frame, index|
+      score = frame.pins
+      if frame.spare? || frame.strike?
+        how_many_rolls_to_take = frame.spare? ? 1 : 2
+        future_rolls = frames[(index+1)..-1].map(&:rolls).flatten
+        score += future_rolls.take(how_many_rolls_to_take).reduce(0,:+)
+      end
+
+      total += score
+    end
+    total
   end
 
-  def calculate_bonus(pins)
-    @frames[prior_frame].add_bonus(pins) if @frames[prior_frame].needs_bonus?
-    @frames[prior_frame - 1].add_bonus(pins) if @current_frame > 1 && @frames[prior_frame - 1].needs_bonus?
-  end
+  private
 
+  def new_frame
+    if frames.size == 9
+      TenthFrame.new(@intermediate_rolls)
+    else
+      Frame.new(@intermediate_rolls)
+    end
+  end
 end
-
