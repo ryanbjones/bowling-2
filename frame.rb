@@ -37,3 +37,17 @@ class Frame
     !complete?
   end
 end
+
+class TenthFrame < Frame
+  def complete?
+    !incomplete?
+  end
+
+  def incomplete?
+    @rolls.length == 1 || ((strike? || spare?) && @rolls.length < 3)
+  end
+
+  def spare?
+    @rolls.length > 1 && @rolls[0] + @rolls[1] == 10
+  end
+end
