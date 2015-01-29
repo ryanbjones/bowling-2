@@ -30,8 +30,13 @@ describe Bowling do
 
   it 'scores three consecutive strikes' do
     3.times {game.roll(10) }
-    14.times {game.rollw(0)}
+    14.times {game.roll(0)}
     expect(game.score).to eq(60)
   end
 
+  it 'scores a 10th frame properly' do
+    14.times {game.roll(0)}
+    5.times {game.roll(10)}
+    expect(game.score).to eq(90)
+  end
 end
