@@ -1,7 +1,11 @@
+require_relative "frame"
+require 'debugger'
+
 class Bowling
   attr_reader :score
   def initialize
-    @frames = Array.new(10) {Frame.new}
+    @frames = Array.new(9) {Frame.new}
+    @frames.push(TenthFrame.new)
     @current_frame = 0
   end
 
@@ -15,7 +19,7 @@ class Bowling
       @frames[@current_frame].add_roll(pins)
     end
     #add bonus if necessary
-    @frames[prior_frame].add_bonus(pins) if @frames[prior_frame].needs_bonus?
+    calculate_bonus(pins)
   end
 
   def prior_frame
