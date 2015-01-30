@@ -1,40 +1,24 @@
 class Frame
-  attr_accessor :score
+  attr_accessor :rolls
 
-  def initialize
-    @rolls = []
-    @score = 0
-    @bonus = []
+  def initialize(rolls)
+    @rolls = rolls
   end
 
-  def add_roll(pins)
-    @score += pins
-    @rolls.push(pins)
-  end
-
-  def needs_bonus?
-    @bonus.length < 1 && spare? || @bonus.length < 2 && strike?
+  def pins
+    rolls.reduce(0,:+)
   end
 
   def strike?
-    @rolls.first == 10
+    rolls.first == 10
   end
 
   def spare?
-    @rolls.reduce(:+) == 10 && @rolls.length == 2
-  end
-
-  def add_bonus(pins)
-    @bonus.push(pins)
-    @score += pins
+    !strike? && rolls.reduce(:+) == 10
   end
 
   def complete?
-    @rolls.length == 2 || @rolls.first == 10
-  end
-
-  def incomplete?
-    !complete?
+    strike? || rolls.length == 2
   end
 end
 
